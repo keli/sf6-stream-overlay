@@ -110,7 +110,7 @@ html, body {
 #cam-area {
   flex-shrink: 0;
   width: 320px;
-  height: 218px;
+  height: 180px;
   background: #E8E0D0;
   position: relative;
   border-bottom: 2px solid var(--border);
@@ -131,19 +131,8 @@ html, body {
   border-style: solid;
   border-color: var(--teal);
 }
-#cam-corner-bl { bottom: 28px; left: 10px;  border-width: 0 0 3px 3px; }
-#cam-corner-br { bottom: 28px; right: 10px; border-width: 0 3px 3px 0; }
-
-#cam-label {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: var(--orange);
-  padding: 4px 12px;
-  font-size: 11px; font-weight: 900;
-  color: #fff; letter-spacing: 3px;
-  text-transform: uppercase;
-  text-align: center;
-}
+#cam-corner-bl { bottom: 10px; left: 10px;  border-width: 0 0 3px 3px; }
+#cam-corner-br { bottom: 10px; right: 10px; border-width: 0 3px 3px 0; }
 
 /* ════════════════════════
    文字内容
@@ -309,7 +298,6 @@ html, body {
     <div id="cam-area">
       <div id="cam-corner-bl"></div>
       <div id="cam-corner-br"></div>
-      <div id="cam-label">● PLAYER CAM</div>
     </div>
 
     <div class="section">
