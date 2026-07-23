@@ -7,14 +7,18 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --orange: #FF5500;
-  --gold:   #FFD700;
-  --member: #00E87A;
-  --admin:  #FFD700;
-  --owner:  #FF5500;
-  --normal: #CCCCCC;
-  --panel-bg: rgba(10, 10, 10, 0.88);
-  --dim: #999;
+  --orange:  #FF5500;
+  --gold:    #FFB800;
+  --member:  #00B96B;
+  --admin:   #E6A000;
+  --owner:   #FF5500;
+  --normal:  #444;
+  --panel-bg: #FFF8F2;
+  --panel-border: #FFD0B0;
+  --text:    #2A2A2A;
+  --dim:     #888;
+  --bubble-bg: #FFFFFF;
+  --bubble-border: #F0D8C8;
 }
 
 html, body {
@@ -42,18 +46,32 @@ html, body {
   flex: 0 0 320px;
   height: 1080px;
   background: var(--panel-bg);
+  border: 3px solid var(--panel-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
+/* 波点背景纹理 */
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 320px;
+  height: 1080px;
+  background-image: radial-gradient(circle, #FFCCAA 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
 .sf6-stripe {
   flex-shrink: 0;
-  height: 3px;
+  height: 4px;
   background: repeating-linear-gradient(
     -45deg,
-    var(--orange) 0px, var(--orange) 4px,
-    #1e1e1e 4px, #1e1e1e 8px
+    var(--orange) 0px, var(--orange) 5px,
+    #FFD0B0 5px, #FFD0B0 10px
   );
 }
 
@@ -63,25 +81,27 @@ html, body {
   flex-shrink: 0;
   width: 320px;
   height: 240px;
-  background: #000;
+  background: #EEE;
   position: relative;
+  border-bottom: 3px solid var(--panel-border);
 }
 #cam-area .cam-frame {
   position: absolute;
   inset: 0;
-  border: 2px solid var(--orange);
+  border: 3px solid var(--orange);
+  border-radius: 4px;
   pointer-events: none;
 }
 #cam-area .cam-frame::before,
 #cam-area .cam-frame::after {
   content: '';
   position: absolute;
-  width: 12px; height: 12px;
+  width: 14px; height: 14px;
   border-color: var(--gold);
   border-style: solid;
 }
-#cam-area .cam-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-#cam-area .cam-frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+#cam-area .cam-frame::before { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+#cam-area .cam-frame::after  { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
 #cam-label {
   position: absolute;
   bottom: 0; left: 0;
@@ -90,21 +110,21 @@ html, body {
   color: #fff; letter-spacing: 2px;
   padding: 3px 16px 3px 8px;
   text-transform: uppercase;
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  border-radius: 0 8px 0 0;
 }
 
 #announcement-body {
-  padding: 14px 14px 10px;
-  font-size: 20px;
+  padding: 16px 16px 8px;
+  font-size: 22px;
   font-weight: 900;
   line-height: 1.6;
-  color: #EEE;
+  color: var(--text);
   flex-shrink: 0;
 }
 
 #schedule-body {
-  padding: 0 14px 14px;
-  font-size: 18px;
+  padding: 0 16px 16px;
+  font-size: 19px;
   font-weight: 700;
   line-height: 1.6;
   color: var(--orange);
@@ -116,7 +136,7 @@ html, body {
   flex-shrink: 0;
   background: var(--orange);
   overflow: hidden;
-  height: 30px;
+  height: 32px;
   display: flex;
   align-items: center;
 }
@@ -134,7 +154,7 @@ html, body {
   to   { transform: translateX(-100%); }
 }
 
-/* ══ 右侧弹幕（微信气泡风格） ══ */
+/* ══ 右侧弹幕（微信气泡） ══ */
 
 #chat-list {
   flex: 1;
@@ -145,7 +165,6 @@ html, body {
   padding: 6px 0 4px;
 }
 
-/* 通用消息行 */
 .msg {
   display: flex;
   align-items: flex-start;
@@ -159,22 +178,24 @@ html, body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 头像 */
 .msg-avatar {
-  width: 38px; height: 38px;
-  border-radius: 6px;
+  width: 40px; height: 40px;
+  border-radius: 8px;
   flex-shrink: 0;
   object-fit: cover;
-  background: #222;
+  background: #DDD;
+  border: 2px solid var(--panel-border);
 }
 
-/* 气泡 */
 .bubble {
-  background: rgba(255, 255, 255, 0.10);
-  border-radius: 0 10px 10px 10px;
-  padding: 6px 10px;
-  max-width: 238px;
+  background: var(--bubble-bg);
+  border: 2px solid var(--bubble-border);
+  border-radius: 0 12px 12px 12px;
+  padding: 6px 12px;
+  max-width: 240px;
   word-break: break-all;
+  position: relative;
+  box-shadow: 2px 2px 0 var(--bubble-border);
 }
 .bubble-author {
   font-size: 13px;
@@ -187,13 +208,13 @@ html, body {
 .author-3 { color: var(--owner); }
 
 .bubble-content {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
-  color: #EEE;
+  color: var(--text);
   line-height: 1.4;
 }
 
-/* 礼物 / 舰长：无头像，小横条 */
+/* 礼物 / 舰长 */
 .msg-inline {
   display: flex;
   padding: 3px 10px;
@@ -203,26 +224,30 @@ html, body {
 .msg-inline .inline-text {
   font-size: 15px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
+  border: 2px solid;
 }
-.msg-gift   .inline-text { color: var(--gold);   background: rgba(255,215,0,0.1); }
-.msg-member .inline-text { color: var(--member); background: rgba(0,232,122,0.1); }
+.msg-gift   .inline-text { color: #B07800; background: #FFF8D6; border-color: #FFD070; }
+.msg-member .inline-text { color: #007A40; background: #D6F5E8; border-color: #70DBA8; }
 
-/* 醒目留言：强调框 */
+/* 醒目留言 */
 .msg-sc-wrap {
   margin: 5px 10px;
-  padding: 8px 10px;
+  padding: 8px 12px;
   border-left: 4px solid var(--orange);
-  background: rgba(255,85,0,0.12);
-  border-radius: 0 8px 8px 0;
+  background: #FFF0E8;
+  border-radius: 0 10px 10px 0;
+  border: 2px solid #FFD0B0;
+  border-left: 4px solid var(--orange);
   flex-shrink: 0;
   animation: fadeUp 0.18s ease-out;
+  box-shadow: 2px 2px 0 #FFD0B0;
 }
 .sc-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
 .sc-author { font-size: 16px; font-weight: 900; color: var(--orange); }
 .sc-price  { font-size: 14px; font-weight: 900; color: var(--gold); }
-.sc-body   { font-size: 18px; font-weight: 700; color: #EEE; word-break: break-all; }
+.sc-body   { font-size: 19px; font-weight: 700; color: var(--text); word-break: break-all; }
 </style>
 </head>
 <body>
@@ -261,7 +286,7 @@ const MAX = 60
 const list = document.getElementById('chat-list')
 const TYPE_TEXT = 0, TYPE_GIFT = 1, TYPE_MEMBER = 2, TYPE_SC = 3
 
-const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"><rect width="38" height="38" rx="6" fill="%23333"/></svg>'
+const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" rx="8" fill="%23DDD"/></svg>'
 
 function esc(s) {
   return String(s ?? '')
