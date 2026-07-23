@@ -2,12 +2,42 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
 <title>SF6 Stream Overlay</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0A0A0A;
+  color: #DDD;
+  font-family: 'Microsoft YaHei', sans-serif;
+  padding: 40px;
+}
+h1 { color: #FF5500; font-size: 20px; margin-bottom: 24px; letter-spacing: 2px; }
+.card {
+  display: inline-block;
+  border: 1px solid #333;
+  border-left: 3px solid #FF5500;
+  padding: 16px 20px;
+  margin: 8px;
+  vertical-align: top;
+  width: 260px;
+}
+.card h2 { font-size: 13px; color: #FF5500; margin-bottom: 8px; letter-spacing: 1px; }
+.card p  { font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.6; }
+.card a  { font-size: 12px; color: #FF8800; text-decoration: none; word-break: break-all; }
+</style>
 </head>
 <body>
-<ul>
-  <li><a href="sf6-danmaku.html">弹幕面板</a></li>
-  <li><a href="sf6-panel.html">信息面板</a></li>
-</ul>
+<h1>SF6 STREAM OVERLAY</h1>
+<div class="card">
+  <h2>弹幕面板</h2>
+  <p>在 blivechat 房间配置里填入此 URL 作为自定义模板，然后在 OBS 中添加为浏览器源，尺寸 240×1080。</p>
+  <a href="./sf6-danmaku.html">sf6-danmaku.html</a>
+</div>
+<div class="card">
+  <h2>信息面板</h2>
+  <p>在 OBS 中添加为浏览器源，尺寸 240×1080。编辑 content.json 更新公告和节目单。</p>
+  <a href="./sf6-panel.html">sf6-panel.html</a>
+</div>
 </body>
 </html>
