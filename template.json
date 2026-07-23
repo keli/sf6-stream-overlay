@@ -2,7 +2,7 @@
   "name": "SF6 弹幕面板",
   "version": "1.0.0",
   "author": "keli",
-  "description": "Street Fighter 6 风格弹幕面板，240x1080 竖条布局",
+  "description": "Street Fighter 6 风格 1920x1080 全屏 overlay，两侧弹幕/信息面板，中间透明",
   "thumbnail": "",
-  "url": "sf6-danmaku.html"
+  "url": "overlay.html"
 }

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #FF5500;
+  --gold:   #FFD700;
+  --member: #00E87A;
+  --admin:  #FFD700;
+  --owner:  #FF5500;
+  --normal: #CCCCCC;
+  --panel-bg: rgba(10, 10, 10, 0.88);
+  --dim: #888;
+}
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent;
+  font-family: 'Noto Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+}
+
+#layout {
+  display: flex;
+  width: 1920px;
+  height: 1080px;
+}
+
+/* ── 中间透明区域（游戏画面透出来） ── */
+#center {
+  flex: 0 0 1440px;
+  height: 1080px;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* ── 通用侧边栏 ── */
+.panel {
+  flex: 0 0 240px;
+  height: 1080px;
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── SF6 标题条 ── */
+.sf6-header {
+  flex-shrink: 0;
+  position: relative;
+  background: var(--orange);
+  padding: 6px 10px;
+  overflow: hidden;
+}
+.sf6-header::after,
+.sf6-header::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 24px; height: 40px;
+  transform: rotate(15deg);
+}
+.sf6-header::after  { right: -6px;  background: rgba(0,0,0,0.25); }
+.sf6-header::before { right: 12px; background: rgba(0,0,0,0.15); }
+.sf6-header .label {
+  font-size: 11px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  position: relative;
+  z-index: 1;
+}
+
+/* 斜线装饰 */
+.sf6-stripe {
+  flex-shrink: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--orange) 0px, var(--orange) 4px,
+    #1e1e1e 4px, #1e1e1e 8px
+  );
+}
+
+/* ══════════════════════════════
+   左侧面板
+   ══════════════════════════════ */
+
+/* 摄像头占位框（OBS 里叠 camera capture 到此位置） */
+#cam-area {
+  flex-shrink: 0;
+  width: 240px;
+  height: 180px;
+  background: #000;
+  position: relative;
+}
+#cam-area .cam-frame {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--orange);
+  pointer-events: none;
+}
+#cam-area .cam-frame::before,
+#cam-area .cam-frame::after {
+  content: '';
+  position: absolute;
+  width: 10px; height: 10px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+#cam-area .cam-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+#cam-area .cam-frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+#cam-label {
+  position: absolute;
+  bottom: 0; left: 0;
+  background: var(--orange);
+  font-size: 9px; font-weight: 900;
+  color: #fff; letter-spacing: 2px;
+  padding: 2px 14px 2px 6px;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+}
+
+/* 公告 */
+#announcement-body {
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #CCC;
+  flex-shrink: 0;
+}
+
+/* 节目单 */
+#schedule-body { padding: 4px 0; overflow: hidden; }
+.schedule-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 4px 10px;
+  gap: 8px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.schedule-item.current { background: rgba(255,85,0,0.1); }
+.schedule-item.current .s-time { color: var(--orange); }
+.schedule-item.current .s-title { color: #fff; }
+.schedule-item.past .s-time,
+.schedule-item.past .s-title { color: #3a3a3a; text-decoration: line-through; }
+.s-time {
+  font-size: 11px; font-weight: 700;
+  color: var(--gold); flex-shrink: 0; width: 42px; padding-top: 1px;
+}
+.s-title { font-size: 12px; color: var(--dim); line-height: 1.4; }
+
+/* 跑马灯 */
+#ticker-wrap {
+  margin-top: auto;
+  flex-shrink: 0;
+  background: var(--orange);
+  overflow: hidden;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+#ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 22s linear infinite;
+}
+.ticker-text {
+  font-size: 11px; font-weight: 700;
+  color: #fff; padding-right: 80px; letter-spacing: 0.5px;
+}
+@keyframes ticker {
+  from { transform: translateX(240px); }
+  to   { transform: translateX(-100%); }
+}
+
+/* ══════════════════════════════
+   右侧弹幕面板
+   ══════════════════════════════ */
+
+#chat-list {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4px 0 2px;
+}
+
+.msg {
+  padding: 2px 8px;
+  animation: fadeUp 0.18s ease-out;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.msg-text .row {
+  display: flex; flex-wrap: wrap; gap: 2px; align-items: baseline;
+}
+.author { font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.author-0 { color: var(--normal); }
+.author-1 { color: var(--member); }
+.author-2 { color: var(--admin); }
+.author-3 { color: var(--owner); }
+.sep     { color: #444; font-size: 11px; flex-shrink: 0; }
+.content { font-size: 12px; color: #DDD; word-break: break-all; }
+
+.msg-gift .row   { font-size: 11px; color: var(--gold); }
+.msg-gift .row::before   { content: '🎁 '; }
+.msg-member .row { font-size: 11px; color: var(--member); }
+.msg-member .row::before { content: '⚔ '; }
+
+.msg-sc {
+  margin: 4px 6px; padding: 4px 6px;
+  border-left: 3px solid var(--orange);
+  background: rgba(255,85,0,0.12);
+}
+.sc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+.sc-author { font-size: 11px; font-weight: 700; color: var(--orange); }
+.sc-price  { font-size: 10px; font-weight: 700; color: var(--gold); }
+.sc-body   { font-size: 12px; color: #EEE; word-break: break-all; }
+</style>
+</head>
+<body>
+<div id="layout">
+
+  <!-- 左侧信息面板 -->
+  <div class="panel" id="left-panel">
+    <div id="cam-area">
+      <div class="cam-frame"></div>
+      <span id="cam-label">PLAYER CAM</span>
+    </div>
+    <div class="sf6-stripe"></div>
+    <div class="sf6-header"><span class="label">公告</span></div>
+    <div id="announcement-body">载入中…</div>
+    <div class="sf6-stripe"></div>
+    <div class="sf6-header"><span class="label">节目单</span></div>
+    <div id="schedule-body"></div>
+    <div id="ticker-wrap">
+      <div id="ticker-track">
+        <span class="ticker-text" id="ticker-text"></span>
+        <span class="ticker-text" id="ticker-text2"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中间透明区域 -->
+  <div id="center"></div>
+
+  <!-- 右侧弹幕面板 -->
+  <div class="panel" id="right-panel">
+    <div class="sf6-header"><span class="label">弹幕</span></div>
+    <div class="sf6-stripe"></div>
+    <div id="chat-list"></div>
+  </div>
+
+</div>
+
+<script src="./blcsdk.js"></script>
+<script>
+/* ── 弹幕 ── */
+const MAX = 60
+const list = document.getElementById('chat-list')
+const TYPE_TEXT = 0, TYPE_GIFT = 1, TYPE_MEMBER = 2, TYPE_SC = 3
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+function push(el) {
+  list.appendChild(el)
+  while (list.children.length > MAX) list.removeChild(list.firstChild)
+}
+function byId(id) { return list.querySelector(`[data-id="${CSS.escape(id)}"]`) }
+
+class Handler extends blcsdk.MsgHandler {
+  addMsg(msg) {
+    switch (msg.type) {
+      case TYPE_TEXT:   this._text(msg);   break
+      case TYPE_GIFT:   this._gift(msg);   break
+      case TYPE_MEMBER: this._member(msg); break
+      case TYPE_SC:     this._sc(msg);     break
+    }
+  }
+  _text(msg) {
+    const div = document.createElement('div')
+    div.className = 'msg msg-text'
+    div.dataset.id = msg.id
+    div.innerHTML = `<div class="row">
+      <span class="author author-${msg.authorType ?? 0}">${esc(msg.authorName)}</span>
+      <span class="sep">: </span>
+      <span class="content">${esc(msg.content)}</span>
+    </div>`
+    push(div)
+  }
+  _gift(msg) {
+    const div = document.createElement('div')
+    div.className = 'msg msg-gift'
+    div.dataset.id = msg.id
+    const price = msg.price > 0 ? ` (¥${msg.price})` : ''
+    div.innerHTML = `<div class="row">${esc(msg.authorName)} 送出 ${esc(msg.giftName)} ×${msg.num}${price}</div>`
+    push(div)
+  }
+  _member(msg) {
+    const div = document.createElement('div')
+    div.className = 'msg msg-member'
+    div.dataset.id = msg.id
+    div.innerHTML = `<div class="row">${esc(msg.authorName)} 开通了舰长</div>`
+    push(div)
+  }
+  _sc(msg) {
+    const div = document.createElement('div')
+    div.className = 'msg msg-sc'
+    div.dataset.id = msg.id
+    div.innerHTML = `<div class="sc-top">
+      <span class="sc-author">${esc(msg.authorName)}</span>
+      <span class="sc-price">¥${msg.price}</span>
+    </div>
+    <div class="sc-body">${esc(msg.content)}</div>`
+    push(div)
+  }
+  delMsgs(ids) {
+    for (const id of ids) { const el = byId(id); if (el) el.remove() }
+  }
+  updateMsg(id, vals) {
+    const el = byId(id)
+    if (!el || !vals.translation) return
+    let t = el.querySelector('.translation')
+    if (!t) {
+      t = document.createElement('div')
+      t.className = 'content translation'
+      t.style.cssText = 'color:#999;font-size:11px'
+      el.appendChild(t)
+    }
+    t.textContent = vals.translation
+  }
+}
+
+blcsdk.setMsgHandler(new Handler())
+blcsdk.init().catch(console.error)
+
+/* ── 信息面板 ── */
+function parseMinutes(t) { const [h,m] = t.split(':').map(Number); return h*60+m }
+function nowMinutes() { const d=new Date(); return d.getHours()*60+d.getMinutes() }
+
+function renderContent(data) {
+  document.getElementById('announcement-body').textContent = data.announcement || ''
+
+  const sched = document.getElementById('schedule-body')
+  sched.innerHTML = ''
+  const now = nowMinutes()
+  const items = data.schedule || []
+  items.forEach((item, i) => {
+    const start = parseMinutes(item.time)
+    const end = i+1 < items.length ? parseMinutes(items[i+1].time) : 24*60
+    const div = document.createElement('div')
+    div.className = 'schedule-item'
+    if (now >= start && now < end) div.classList.add('current')
+    else if (now >= end) div.classList.add('past')
+    div.innerHTML = `<span class="s-time">${item.time}</span><span class="s-title">${item.title}</span>`
+    sched.appendChild(div)
+  })
+
+  const ticker = data.ticker || ''
+  document.getElementById('ticker-text').textContent = ticker
+  document.getElementById('ticker-text2').textContent = ticker
+}
+
+async function loadContent() {
+  try {
+    const r = await fetch('./content.json?_=' + Date.now())
+    if (r.ok) renderContent(await r.json())
+  } catch(e) { console.error('content.json 加载失败', e) }
+}
+
+loadContent()
+setInterval(loadContent, 30000)
+setInterval(() => {
+  const now = nowMinutes()
+  document.querySelectorAll('.schedule-item').forEach((el, i, all) => {
+    const start = parseMinutes(el.querySelector('.s-time').textContent)
+    const end = all[i+1] ? parseMinutes(all[i+1].querySelector('.s-time').textContent) : 24*60
+    el.classList.remove('current','past')
+    if (now >= start && now < end) el.classList.add('current')
+    else if (now >= end) el.classList.add('past')
+  })
+}, 60000)
+</script>
+</body>
+</html>

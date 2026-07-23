@@ -6,21 +6,13 @@
 <title>SF6 Stream Overlay</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: #0A0A0A;
-  color: #DDD;
-  font-family: 'Microsoft YaHei', sans-serif;
-  padding: 40px;
-}
-h1 { color: #FF5500; font-size: 20px; margin-bottom: 24px; letter-spacing: 2px; }
+body { background: #0A0A0A; color: #DDD; font-family: 'Microsoft YaHei', sans-serif; padding: 40px; }
+h1 { color: #FF5500; font-size: 20px; margin-bottom: 8px; letter-spacing: 2px; }
+p  { font-size: 12px; color: #666; margin-bottom: 28px; }
 .card {
-  display: inline-block;
-  border: 1px solid #333;
-  border-left: 3px solid #FF5500;
-  padding: 16px 20px;
-  margin: 8px;
-  vertical-align: top;
-  width: 260px;
+  display: inline-block; border: 1px solid #333;
+  border-left: 3px solid #FF5500; padding: 16px 20px;
+  margin: 8px; vertical-align: top; width: 300px;
 }
 .card h2 { font-size: 13px; color: #FF5500; margin-bottom: 8px; letter-spacing: 1px; }
 .card p  { font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.6; }
@@ -29,15 +21,16 @@ h1 { color: #FF5500; font-size: 20px; margin-bottom: 24px; letter-spacing: 2px; 
 </head>
 <body>
 <h1>SF6 STREAM OVERLAY</h1>
+<p>在 blivechat 配置里将自定义模板 URL 设为 overlay.html，OBS 添加为 1920×1080 浏览器源（启用透明背景）。</p>
 <div class="card">
-  <h2>弹幕面板</h2>
-  <p>在 blivechat 房间配置里填入此 URL 作为自定义模板，然后在 OBS 中添加为浏览器源，尺寸 240×1080。</p>
-  <a href="./sf6-danmaku.html">sf6-danmaku.html</a>
+  <h2>全屏 Overlay</h2>
+  <p>1920×1080，中间透明，左侧信息面板，右侧弹幕。作为 blivechat 自定义模板使用。</p>
+  <a href="./overlay.html">overlay.html</a>
 </div>
 <div class="card">
-  <h2>信息面板</h2>
-  <p>在 OBS 中添加为浏览器源，尺寸 240×1080。编辑 content.json 更新公告和节目单。</p>
-  <a href="./sf6-panel.html">sf6-panel.html</a>
+  <h2>内容配置</h2>
+  <p>编辑 content.json 更新公告、节目单和跑马灯。页面每 30 秒自动刷新。</p>
+  <a href="./content.json">content.json</a>
 </div>
 </body>
 </html>
