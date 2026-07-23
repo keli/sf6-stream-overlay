@@ -31,7 +31,7 @@ html, body {
   height: 1080px;
 }
 
-/* ── 中间透明区域（游戏画面透出来） ── */
+/* ── 中间透明区域 ── */
 #center {
   flex: 0 0 1920px;
   height: 1080px;
@@ -49,35 +49,6 @@ html, body {
   overflow: hidden;
 }
 
-/* ── SF6 标题条 ── */
-.sf6-header {
-  flex-shrink: 0;
-  position: relative;
-  background: var(--orange);
-  padding: 6px 10px;
-  overflow: hidden;
-}
-.sf6-header::after,
-.sf6-header::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  width: 24px; height: 40px;
-  transform: rotate(15deg);
-}
-.sf6-header::after  { right: -6px;  background: rgba(0,0,0,0.25); }
-.sf6-header::before { right: 12px; background: rgba(0,0,0,0.15); }
-.sf6-header .label {
-  font-size: 11px;
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
-  position: relative;
-  z-index: 1;
-}
-
 /* 斜线装饰 */
 .sf6-stripe {
   flex-shrink: 0;
@@ -93,7 +64,6 @@ html, body {
    左侧面板
    ══════════════════════════════ */
 
-/* 摄像头占位框（OBS 里叠 camera capture 到此位置） */
 #cam-area {
   flex-shrink: 0;
   width: 320px;
@@ -121,41 +91,21 @@ html, body {
   position: absolute;
   bottom: 0; left: 0;
   background: var(--orange);
-  font-size: 9px; font-weight: 900;
+  font-size: 10px; font-weight: 900;
   color: #fff; letter-spacing: 2px;
-  padding: 2px 14px 2px 6px;
+  padding: 2px 14px 2px 8px;
   text-transform: uppercase;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
 }
 
 /* 公告 */
 #announcement-body {
-  padding: 8px 10px;
-  font-size: 12px;
-  line-height: 1.6;
+  padding: 12px 12px;
+  font-size: 16px;
+  line-height: 1.7;
   color: #CCC;
   flex-shrink: 0;
 }
-
-/* 节目单 */
-#schedule-body { padding: 4px 0; overflow: hidden; }
-.schedule-item {
-  display: flex;
-  align-items: flex-start;
-  padding: 4px 10px;
-  gap: 8px;
-  border-bottom: 1px solid #1a1a1a;
-}
-.schedule-item.current { background: rgba(255,85,0,0.1); }
-.schedule-item.current .s-time { color: var(--orange); }
-.schedule-item.current .s-title { color: #fff; }
-.schedule-item.past .s-time,
-.schedule-item.past .s-title { color: #3a3a3a; text-decoration: line-through; }
-.s-time {
-  font-size: 11px; font-weight: 700;
-  color: var(--gold); flex-shrink: 0; width: 42px; padding-top: 1px;
-}
-.s-title { font-size: 12px; color: var(--dim); line-height: 1.4; }
 
 /* 跑马灯 */
 #ticker-wrap {
@@ -163,7 +113,7 @@ html, body {
   flex-shrink: 0;
   background: var(--orange);
   overflow: hidden;
-  height: 22px;
+  height: 28px;
   display: flex;
   align-items: center;
 }
@@ -173,7 +123,7 @@ html, body {
   animation: ticker 22s linear infinite;
 }
 .ticker-text {
-  font-size: 11px; font-weight: 700;
+  font-size: 14px; font-weight: 700;
   color: #fff; padding-right: 80px; letter-spacing: 0.5px;
 }
 @keyframes ticker {
@@ -191,14 +141,14 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 4px 0 2px;
+  padding: 6px 0 4px;
 }
 
 .msg {
-  padding: 2px 8px;
+  padding: 3px 10px;
   animation: fadeUp 0.18s ease-out;
   flex-shrink: 0;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
@@ -206,30 +156,30 @@ html, body {
 }
 
 .msg-text .row {
-  display: flex; flex-wrap: wrap; gap: 2px; align-items: baseline;
+  display: flex; flex-wrap: wrap; gap: 3px; align-items: baseline;
 }
-.author { font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.author { font-size: 15px; font-weight: 700; flex-shrink: 0; }
 .author-0 { color: var(--normal); }
 .author-1 { color: var(--member); }
 .author-2 { color: var(--admin); }
 .author-3 { color: var(--owner); }
-.sep     { color: #444; font-size: 11px; flex-shrink: 0; }
-.content { font-size: 12px; color: #DDD; word-break: break-all; }
+.sep     { color: #444; font-size: 15px; flex-shrink: 0; }
+.content { font-size: 16px; color: #DDD; word-break: break-all; }
 
-.msg-gift .row   { font-size: 11px; color: var(--gold); }
+.msg-gift .row   { font-size: 15px; color: var(--gold); }
 .msg-gift .row::before   { content: '🎁 '; }
-.msg-member .row { font-size: 11px; color: var(--member); }
+.msg-member .row { font-size: 15px; color: var(--member); }
 .msg-member .row::before { content: '⚔ '; }
 
 .msg-sc {
-  margin: 4px 6px; padding: 4px 6px;
+  margin: 5px 8px; padding: 5px 8px;
   border-left: 3px solid var(--orange);
   background: rgba(255,85,0,0.12);
 }
-.sc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
-.sc-author { font-size: 11px; font-weight: 700; color: var(--orange); }
-.sc-price  { font-size: 10px; font-weight: 700; color: var(--gold); }
-.sc-body   { font-size: 12px; color: #EEE; word-break: break-all; }
+.sc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.sc-author { font-size: 15px; font-weight: 700; color: var(--orange); }
+.sc-price  { font-size: 13px; font-weight: 700; color: var(--gold); }
+.sc-body   { font-size: 16px; color: #EEE; word-break: break-all; }
 </style>
 </head>
 <body>
@@ -242,11 +192,7 @@ html, body {
       <span id="cam-label">PLAYER CAM</span>
     </div>
     <div class="sf6-stripe"></div>
-    <div class="sf6-header"><span class="label">公告</span></div>
-    <div id="announcement-body">载入中…</div>
-    <div class="sf6-stripe"></div>
-    <div class="sf6-header"><span class="label">节目单</span></div>
-    <div id="schedule-body"></div>
+    <div id="announcement-body"></div>
     <div id="ticker-wrap">
       <div id="ticker-track">
         <span class="ticker-text" id="ticker-text"></span>
@@ -260,8 +206,6 @@ html, body {
 
   <!-- 右侧弹幕面板 -->
   <div class="panel" id="right-panel">
-    <div class="sf6-header"><span class="label">弹幕</span></div>
-    <div class="sf6-stripe"></div>
     <div id="chat-list"></div>
   </div>
 
@@ -341,7 +285,7 @@ class Handler extends blcsdk.MsgHandler {
     if (!t) {
       t = document.createElement('div')
       t.className = 'content translation'
-      t.style.cssText = 'color:#999;font-size:11px'
+      t.style.cssText = 'color:#999;font-size:14px'
       el.appendChild(t)
     }
     t.textContent = vals.translation
@@ -352,51 +296,20 @@ blcsdk.setMsgHandler(new Handler())
 blcsdk.init().catch(console.error)
 
 /* ── 信息面板 ── */
-function parseMinutes(t) { const [h,m] = t.split(':').map(Number); return h*60+m }
-function nowMinutes() { const d=new Date(); return d.getHours()*60+d.getMinutes() }
-
-function renderContent(data) {
-  document.getElementById('announcement-body').textContent = data.announcement || ''
-
-  const sched = document.getElementById('schedule-body')
-  sched.innerHTML = ''
-  const now = nowMinutes()
-  const items = data.schedule || []
-  items.forEach((item, i) => {
-    const start = parseMinutes(item.time)
-    const end = i+1 < items.length ? parseMinutes(items[i+1].time) : 24*60
-    const div = document.createElement('div')
-    div.className = 'schedule-item'
-    if (now >= start && now < end) div.classList.add('current')
-    else if (now >= end) div.classList.add('past')
-    div.innerHTML = `<span class="s-time">${item.time}</span><span class="s-title">${item.title}</span>`
-    sched.appendChild(div)
-  })
-
-  const ticker = data.ticker || ''
-  document.getElementById('ticker-text').textContent = ticker
-  document.getElementById('ticker-text2').textContent = ticker
-}
-
 async function loadContent() {
   try {
     const r = await fetch('./content.json?_=' + Date.now())
-    if (r.ok) renderContent(await r.json())
+    if (!r.ok) return
+    const data = await r.json()
+    document.getElementById('announcement-body').textContent = data.announcement || ''
+    const ticker = data.ticker || ''
+    document.getElementById('ticker-text').textContent = ticker
+    document.getElementById('ticker-text2').textContent = ticker
   } catch(e) { console.error('content.json 加载失败', e) }
 }
 
 loadContent()
 setInterval(loadContent, 30000)
-setInterval(() => {
-  const now = nowMinutes()
-  document.querySelectorAll('.schedule-item').forEach((el, i, all) => {
-    const start = parseMinutes(el.querySelector('.s-time').textContent)
-    const end = all[i+1] ? parseMinutes(all[i+1].querySelector('.s-time').textContent) : 24*60
-    el.classList.remove('current','past')
-    if (now >= start && now < end) el.classList.add('current')
-    else if (now >= end) el.classList.add('past')
-  })
-}, 60000)
 </script>
 </body>
 </html>
