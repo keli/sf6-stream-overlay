@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #FF5500;
+  --gold: #FFD700;
+  --bg: #0A0A0A;
+  --bg2: rgba(14, 14, 14, 0.94);
+  --text: #DDDDDD;
+  --dim: #888888;
+}
+
+html, body {
+  width: 240px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent;
+  font-family: 'Noto Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
+  color: var(--text);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg2);
+}
+
+/* ── 摄像头占位区 ── */
+/* OBS 里在此区域叠加视频采集源 */
+#cam-area {
+  width: 240px;
+  height: 180px;
+  flex-shrink: 0;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+#cam-area .cam-frame {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--orange);
+  pointer-events: none;
+  z-index: 1;
+}
+/* SF6 角标装饰 */
+#cam-area .cam-frame::before,
+#cam-area .cam-frame::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+#cam-area .cam-frame::before {
+  top: -1px; left: -1px;
+  border-width: 2px 0 0 2px;
+}
+#cam-area .cam-frame::after {
+  bottom: -1px; right: -1px;
+  border-width: 0 2px 2px 0;
+}
+#cam-label {
+  position: absolute;
+  bottom: 0; left: 0;
+  background: var(--orange);
+  font-size: 9px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  padding-right: 14px;
+}
+
+/* ── 斜线装饰 ── */
+.sf6-stripe {
+  height: 3px;
+  flex-shrink: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--orange) 0px, var(--orange) 4px,
+    #222 4px, #222 8px
+  );
+}
+
+/* ── 通用区块 ── */
+.section {
+  flex-shrink: 0;
+}
+
+.section-header {
+  position: relative;
+  background: #161616;
+  padding: 5px 10px;
+  overflow: hidden;
+  border-bottom: 1px solid #2a2a2a;
+}
+.section-header::after {
+  content: '';
+  position: absolute;
+  right: -6px; top: -3px;
+  width: 24px; height: 32px;
+  background: rgba(255,85,0,0.2);
+  transform: rotate(15deg);
+}
+.section-header .title {
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--orange);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ── 公告 ── */
+#announcement-body {
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  min-height: 60px;
+}
+
+/* ── 节目单 ── */
+#schedule-body {
+  padding: 4px 0;
+}
+.schedule-item {
+  display: flex;
+  align-items: stretch;
+  padding: 4px 10px;
+  gap: 8px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.schedule-item.current {
+  background: rgba(255, 85, 0, 0.1);
+}
+.schedule-item.current .s-time {
+  color: var(--orange);
+}
+.schedule-item.current .s-title {
+  color: #fff;
+}
+.schedule-item.past .s-time,
+.schedule-item.past .s-title {
+  color: #444;
+  text-decoration: line-through;
+}
+.s-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 42px;
+  padding-top: 1px;
+}
+.s-title {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.4;
+}
+
+/* ── 跑马灯 ── */
+#ticker-wrap {
+  margin-top: auto;
+  flex-shrink: 0;
+  background: var(--orange);
+  overflow: hidden;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+#ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+}
+.ticker-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  padding-right: 80px;
+  letter-spacing: 0.5px;
+}
+@keyframes ticker {
+  from { transform: translateX(240px); }
+  to   { transform: translateX(-100%); }
+}
+</style>
+</head>
+<body>
+
+<!-- 摄像头区域（在 OBS 里叠加视频采集源） -->
+<div id="cam-area">
+  <div class="cam-frame"></div>
+  <span id="cam-label">PLAYER CAM</span>
+</div>
+
+<div class="sf6-stripe"></div>
+
+<!-- 公告 -->
+<div class="section" id="announcement-section">
+  <div class="section-header"><span class="title">公告</span></div>
+  <div id="announcement-body">载入中…</div>
+</div>
+
+<div class="sf6-stripe"></div>
+
+<!-- 节目单 -->
+<div class="section" id="schedule-section">
+  <div class="section-header"><span class="title">节目单</span></div>
+  <div id="schedule-body"></div>
+</div>
+
+<!-- 跑马灯 -->
+<div id="ticker-wrap">
+  <div id="ticker-track">
+    <span class="ticker-text" id="ticker-text"></span>
+    <span class="ticker-text" id="ticker-text2"></span>
+  </div>
+</div>
+
+<script>
+const REFRESH_INTERVAL = 30000 // 每 30 秒刷新一次 content.json
+
+function padTime(h, m) {
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`
+}
+
+function nowMinutes() {
+  const d = new Date()
+  return d.getHours() * 60 + d.getMinutes()
+}
+
+function parseMinutes(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number)
+  return h * 60 + m
+}
+
+function render(data) {
+  // 公告
+  const ann = document.getElementById('announcement-body')
+  ann.textContent = data.announcement || ''
+
+  // 节目单
+  const sched = document.getElementById('schedule-body')
+  sched.innerHTML = ''
+  const now = nowMinutes()
+  const items = data.schedule || []
+  items.forEach((item, i) => {
+    const start = parseMinutes(item.time)
+    const end = i + 1 < items.length ? parseMinutes(items[i + 1].time) : 24 * 60
+    const div = document.createElement('div')
+    div.className = 'schedule-item'
+    if (now >= start && now < end) div.classList.add('current')
+    else if (now >= end) div.classList.add('past')
+    div.innerHTML = `<span class="s-time">${item.time}</span><span class="s-title">${item.title}</span>`
+    sched.appendChild(div)
+  })
+
+  // 跑马灯（两份文字填满无缝循环）
+  const ticker = data.ticker || ''
+  document.getElementById('ticker-text').textContent = ticker
+  document.getElementById('ticker-text2').textContent = ticker
+}
+
+async function load() {
+  try {
+    const r = await fetch('/custom_public/content.json?_=' + Date.now())
+    if (!r.ok) throw new Error(r.status)
+    const data = await r.json()
+    render(data)
+  } catch (e) {
+    console.error('content.json 加载失败', e)
+  }
+}
+
+load()
+setInterval(load, REFRESH_INTERVAL)
+// 每分钟重新渲染节目单高亮（不重新 fetch）
+setInterval(() => {
+  const ann = document.getElementById('announcement-body').textContent
+  // 只更新节目单高亮，不影响已加载的内容
+  const items = [...document.querySelectorAll('.schedule-item')]
+  const now = nowMinutes()
+  items.forEach((el, i) => {
+    const timeEl = el.querySelector('.s-time')
+    const start = parseMinutes(timeEl.textContent)
+    const next = items[i + 1]?.querySelector('.s-time')
+    const end = next ? parseMinutes(next.textContent) : 24 * 60
+    el.classList.remove('current', 'past')
+    if (now >= start && now < end) el.classList.add('current')
+    else if (now >= end) el.classList.add('past')
+  })
+}, 60000)
+</script>
+</body>
+</html>
