@@ -14,7 +14,7 @@
   --owner:  #FF5500;
   --normal: #CCCCCC;
   --panel-bg: rgba(10, 10, 10, 0.88);
-  --dim: #888;
+  --dim: #999;
 }
 
 html, body {
@@ -31,7 +31,6 @@ html, body {
   height: 1080px;
 }
 
-/* ── 中间透明区域 ── */
 #center {
   flex: 0 0 1920px;
   height: 1080px;
@@ -39,7 +38,6 @@ html, body {
   pointer-events: none;
 }
 
-/* ── 通用侧边栏 ── */
 .panel {
   flex: 0 0 320px;
   height: 1080px;
@@ -49,7 +47,6 @@ html, body {
   overflow: hidden;
 }
 
-/* 斜线装饰 */
 .sf6-stripe {
   flex-shrink: 0;
   height: 3px;
@@ -60,9 +57,7 @@ html, body {
   );
 }
 
-/* ══════════════════════════════
-   左侧面板
-   ══════════════════════════════ */
+/* ══ 左侧面板 ══ */
 
 #cam-area {
   flex-shrink: 0;
@@ -81,7 +76,7 @@ html, body {
 #cam-area .cam-frame::after {
   content: '';
   position: absolute;
-  width: 10px; height: 10px;
+  width: 12px; height: 12px;
   border-color: var(--gold);
   border-style: solid;
 }
@@ -91,29 +86,37 @@ html, body {
   position: absolute;
   bottom: 0; left: 0;
   background: var(--orange);
-  font-size: 10px; font-weight: 900;
+  font-size: 11px; font-weight: 900;
   color: #fff; letter-spacing: 2px;
-  padding: 2px 14px 2px 8px;
+  padding: 3px 16px 3px 8px;
   text-transform: uppercase;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
 }
 
-/* 公告 */
 #announcement-body {
-  padding: 12px 12px;
-  font-size: 16px;
-  line-height: 1.7;
-  color: #CCC;
+  padding: 14px 14px 10px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.6;
+  color: #EEE;
   flex-shrink: 0;
 }
 
-/* 跑马灯 */
+#schedule-body {
+  padding: 0 14px 14px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--orange);
+  flex-shrink: 0;
+}
+
 #ticker-wrap {
   margin-top: auto;
   flex-shrink: 0;
   background: var(--orange);
   overflow: hidden;
-  height: 28px;
+  height: 30px;
   display: flex;
   align-items: center;
 }
@@ -123,17 +126,15 @@ html, body {
   animation: ticker 22s linear infinite;
 }
 .ticker-text {
-  font-size: 14px; font-weight: 700;
-  color: #fff; padding-right: 80px; letter-spacing: 0.5px;
+  font-size: 15px; font-weight: 700;
+  color: #fff; padding-right: 80px;
 }
 @keyframes ticker {
   from { transform: translateX(320px); }
   to   { transform: translateX(-100%); }
 }
 
-/* ══════════════════════════════
-   右侧弹幕面板
-   ══════════════════════════════ */
+/* ══ 右侧弹幕（微信气泡风格） ══ */
 
 #chat-list {
   flex: 1;
@@ -144,42 +145,84 @@ html, body {
   padding: 6px 0 4px;
 }
 
+/* 通用消息行 */
 .msg {
-  padding: 3px 10px;
+  display: flex;
+  align-items: flex-start;
+  padding: 4px 10px;
+  gap: 8px;
   animation: fadeUp 0.18s ease-out;
   flex-shrink: 0;
-  line-height: 1.5;
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.msg-text .row {
-  display: flex; flex-wrap: wrap; gap: 3px; align-items: baseline;
+/* 头像 */
+.msg-avatar {
+  width: 38px; height: 38px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #222;
 }
-.author { font-size: 15px; font-weight: 700; flex-shrink: 0; }
+
+/* 气泡 */
+.bubble {
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 0 10px 10px 10px;
+  padding: 6px 10px;
+  max-width: 238px;
+  word-break: break-all;
+}
+.bubble-author {
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 2px;
+}
 .author-0 { color: var(--normal); }
 .author-1 { color: var(--member); }
 .author-2 { color: var(--admin); }
 .author-3 { color: var(--owner); }
-.sep     { color: #444; font-size: 15px; flex-shrink: 0; }
-.content { font-size: 16px; color: #DDD; word-break: break-all; }
 
-.msg-gift .row   { font-size: 15px; color: var(--gold); }
-.msg-gift .row::before   { content: '🎁 '; }
-.msg-member .row { font-size: 15px; color: var(--member); }
-.msg-member .row::before { content: '⚔ '; }
-
-.msg-sc {
-  margin: 5px 8px; padding: 5px 8px;
-  border-left: 3px solid var(--orange);
-  background: rgba(255,85,0,0.12);
+.bubble-content {
+  font-size: 18px;
+  font-weight: 700;
+  color: #EEE;
+  line-height: 1.4;
 }
-.sc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
-.sc-author { font-size: 15px; font-weight: 700; color: var(--orange); }
-.sc-price  { font-size: 13px; font-weight: 700; color: var(--gold); }
-.sc-body   { font-size: 16px; color: #EEE; word-break: break-all; }
+
+/* 礼物 / 舰长：无头像，小横条 */
+.msg-inline {
+  display: flex;
+  padding: 3px 10px;
+  flex-shrink: 0;
+  animation: fadeUp 0.18s ease-out;
+}
+.msg-inline .inline-text {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.msg-gift   .inline-text { color: var(--gold);   background: rgba(255,215,0,0.1); }
+.msg-member .inline-text { color: var(--member); background: rgba(0,232,122,0.1); }
+
+/* 醒目留言：强调框 */
+.msg-sc-wrap {
+  margin: 5px 10px;
+  padding: 8px 10px;
+  border-left: 4px solid var(--orange);
+  background: rgba(255,85,0,0.12);
+  border-radius: 0 8px 8px 0;
+  flex-shrink: 0;
+  animation: fadeUp 0.18s ease-out;
+}
+.sc-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.sc-author { font-size: 16px; font-weight: 900; color: var(--orange); }
+.sc-price  { font-size: 14px; font-weight: 900; color: var(--gold); }
+.sc-body   { font-size: 18px; font-weight: 700; color: #EEE; word-break: break-all; }
 </style>
 </head>
 <body>
@@ -193,6 +236,7 @@ html, body {
     </div>
     <div class="sf6-stripe"></div>
     <div id="announcement-body"></div>
+    <div id="schedule-body"></div>
     <div id="ticker-wrap">
       <div id="ticker-track">
         <span class="ticker-text" id="ticker-text"></span>
@@ -213,10 +257,11 @@ html, body {
 
 <script src="./blcsdk.js"></script>
 <script>
-/* ── 弹幕 ── */
 const MAX = 60
 const list = document.getElementById('chat-list')
 const TYPE_TEXT = 0, TYPE_GIFT = 1, TYPE_MEMBER = 2, TYPE_SC = 3
+
+const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"><rect width="38" height="38" rx="6" fill="%23333"/></svg>'
 
 function esc(s) {
   return String(s ?? '')
@@ -238,55 +283,65 @@ class Handler extends blcsdk.MsgHandler {
       case TYPE_SC:     this._sc(msg);     break
     }
   }
+
   _text(msg) {
     const div = document.createElement('div')
     div.className = 'msg msg-text'
     div.dataset.id = msg.id
-    div.innerHTML = `<div class="row">
-      <span class="author author-${msg.authorType ?? 0}">${esc(msg.authorName)}</span>
-      <span class="sep">: </span>
-      <span class="content">${esc(msg.content)}</span>
-    </div>`
+    const avatar = msg.avatarUrl || DEFAULT_AVATAR
+    const ac = msg.authorType ?? 0
+    div.innerHTML = `
+      <img class="msg-avatar" src="${esc(avatar)}" onerror="this.src='${DEFAULT_AVATAR}'">
+      <div class="bubble">
+        <div class="bubble-author author-${ac}">${esc(msg.authorName)}</div>
+        <div class="bubble-content">${esc(msg.content)}</div>
+      </div>`
     push(div)
   }
+
   _gift(msg) {
     const div = document.createElement('div')
-    div.className = 'msg msg-gift'
+    div.className = 'msg-inline msg-gift'
     div.dataset.id = msg.id
-    const price = msg.price > 0 ? ` (¥${msg.price})` : ''
-    div.innerHTML = `<div class="row">${esc(msg.authorName)} 送出 ${esc(msg.giftName)} ×${msg.num}${price}</div>`
+    const price = msg.price > 0 ? ` ¥${msg.price}` : ''
+    div.innerHTML = `<span class="inline-text">🎁 ${esc(msg.authorName)} 送出 ${esc(msg.giftName)} ×${msg.num}${price}</span>`
     push(div)
   }
+
   _member(msg) {
     const div = document.createElement('div')
-    div.className = 'msg msg-member'
+    div.className = 'msg-inline msg-member'
     div.dataset.id = msg.id
-    div.innerHTML = `<div class="row">${esc(msg.authorName)} 开通了舰长</div>`
+    div.innerHTML = `<span class="inline-text">⚔ ${esc(msg.authorName)} 开通了舰长</span>`
     push(div)
   }
+
   _sc(msg) {
     const div = document.createElement('div')
-    div.className = 'msg msg-sc'
+    div.className = 'msg-sc-wrap'
     div.dataset.id = msg.id
-    div.innerHTML = `<div class="sc-top">
-      <span class="sc-author">${esc(msg.authorName)}</span>
-      <span class="sc-price">¥${msg.price}</span>
-    </div>
-    <div class="sc-body">${esc(msg.content)}</div>`
+    div.innerHTML = `
+      <div class="sc-top">
+        <span class="sc-author">${esc(msg.authorName)}</span>
+        <span class="sc-price">¥${msg.price}</span>
+      </div>
+      <div class="sc-body">${esc(msg.content)}</div>`
     push(div)
   }
+
   delMsgs(ids) {
     for (const id of ids) { const el = byId(id); if (el) el.remove() }
   }
+
   updateMsg(id, vals) {
     const el = byId(id)
     if (!el || !vals.translation) return
     let t = el.querySelector('.translation')
     if (!t) {
       t = document.createElement('div')
-      t.className = 'content translation'
-      t.style.cssText = 'color:#999;font-size:14px'
-      el.appendChild(t)
+      t.className = 'bubble-content translation'
+      t.style.cssText = 'color:#999;font-size:15px'
+      el.querySelector('.bubble')?.appendChild(t)
     }
     t.textContent = vals.translation
   }
@@ -302,6 +357,7 @@ async function loadContent() {
     if (!r.ok) return
     const data = await r.json()
     document.getElementById('announcement-body').textContent = data.announcement || ''
+    document.getElementById('schedule-body').textContent = data.schedule || ''
     const ticker = data.ticker || ''
     document.getElementById('ticker-text').textContent = ticker
     document.getElementById('ticker-text2').textContent = ticker
