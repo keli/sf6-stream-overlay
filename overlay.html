@@ -7,18 +7,18 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --orange:  #FF5500;
-  --gold:    #FFB800;
-  --member:  #00B96B;
-  --admin:   #E6A000;
-  --owner:   #FF5500;
-  --normal:  #444;
-  --panel-bg: #FFF8F2;
-  --panel-border: #FFD0B0;
-  --text:    #2A2A2A;
-  --dim:     #888;
-  --bubble-bg: #FFFFFF;
-  --bubble-border: #F0D8C8;
+  --bg:       #1B1730;
+  --bg2:      #241E3F;
+  --bg3:      #2E2655;
+  --cyan:     #00D4AA;
+  --gold:     #FFB800;
+  --rose:     #FF5577;
+  --member:   #00D4AA;
+  --admin:    #FFB800;
+  --owner:    #FF5577;
+  --normal:   #C8C0E0;
+  --text:     #F0ECFF;
+  --dim:      #7870A0;
 }
 
 html, body {
@@ -42,120 +42,200 @@ html, body {
   pointer-events: none;
 }
 
+/* ════════════════════════
+   侧边栏通用
+   ════════════════════════ */
 .panel {
   flex: 0 0 320px;
   height: 1080px;
-  background: var(--panel-bg);
-  border: 3px solid var(--panel-border);
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
-/* 波点背景纹理 */
+/* 顶部彩虹渐变边 */
 .panel::before {
   content: '';
   position: absolute;
-  inset: 0;
-  width: 320px;
-  height: 1080px;
-  background-image: radial-gradient(circle, #FFCCAA 1px, transparent 1px);
-  background-size: 18px 18px;
-  opacity: 0.25;
-  pointer-events: none;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--gold), var(--rose));
+  z-index: 10;
 }
 
-.sf6-stripe {
-  flex-shrink: 0;
-  height: 4px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--orange) 0px, var(--orange) 5px,
-    #FFD0B0 5px, #FFD0B0 10px
+/* 左侧竖条装饰 */
+#left-panel::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 2px; height: 100%;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--cyan) 20%,
+    var(--gold) 50%,
+    var(--rose) 80%,
+    transparent 100%
   );
+  opacity: 0.4;
+}
+#right-panel::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px; height: 100%;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--rose) 20%,
+    var(--gold) 50%,
+    var(--cyan) 80%,
+    transparent 100%
+  );
+  opacity: 0.4;
 }
 
-/* ══ 左侧面板 ══ */
+/* 分隔线 */
+.divider {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 20px;
+  gap: 8px;
+}
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dim), transparent);
+}
+.divider-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex-shrink: 0;
+}
+.divider-dot.accent { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
 
+/* section 区块 */
+.section {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  position: relative;
+}
+
+/* section 小标题 */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 6px;
+}
+
+/* ════════════════════════
+   左侧：摄像头区
+   ════════════════════════ */
 #cam-area {
   flex-shrink: 0;
   width: 320px;
-  height: 240px;
-  background: #EEE;
+  height: 220px;
+  background: #0D0B1A;
   position: relative;
-  border-bottom: 3px solid var(--panel-border);
-}
-#cam-area .cam-frame {
-  position: absolute;
-  inset: 0;
-  border: 3px solid var(--orange);
-  border-radius: 4px;
-  pointer-events: none;
-}
-#cam-area .cam-frame::before,
-#cam-area .cam-frame::after {
-  content: '';
-  position: absolute;
-  width: 14px; height: 14px;
-  border-color: var(--gold);
-  border-style: solid;
-}
-#cam-area .cam-frame::before { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
-#cam-area .cam-frame::after  { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
-#cam-label {
-  position: absolute;
-  bottom: 0; left: 0;
-  background: var(--orange);
-  font-size: 11px; font-weight: 900;
-  color: #fff; letter-spacing: 2px;
-  padding: 3px 16px 3px 8px;
-  text-transform: uppercase;
-  border-radius: 0 8px 0 0;
 }
 
+/* 四角装饰 */
+#cam-area::before,
+#cam-area::after,
+#cam-corner-br,
+#cam-corner-tl-inner {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border-color: var(--cyan);
+  border-style: solid;
+}
+#cam-area::before { top: 8px; left: 8px;    border-width: 2px 0 0 2px; }
+#cam-area::after  { top: 8px; right: 8px;   border-width: 2px 2px 0 0; }
+#cam-corner-br    { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; border-color: var(--gold); }
+#cam-corner-bl    {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  width: 18px; height: 18px;
+  border: 2px solid var(--gold);
+  border-width: 0 0 2px 2px;
+}
+
+#cam-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(90deg, rgba(0,212,170,0.15), transparent);
+  border-top: 1px solid rgba(0,212,170,0.3);
+  padding: 4px 10px;
+  font-size: 10px; font-weight: 700;
+  color: var(--cyan); letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ════════════════════════
+   左侧：文字区块
+   ════════════════════════ */
 #announcement-body {
-  padding: 16px 16px 8px;
   font-size: 22px;
   font-weight: 900;
   line-height: 1.6;
   color: var(--text);
-  flex-shrink: 0;
 }
 
 #schedule-body {
-  padding: 0 16px 16px;
   font-size: 19px;
   font-weight: 700;
   line-height: 1.6;
-  color: var(--orange);
-  flex-shrink: 0;
+  color: var(--cyan);
 }
 
+/* ════════════════════════
+   跑马灯
+   ════════════════════════ */
 #ticker-wrap {
   margin-top: auto;
   flex-shrink: 0;
-  background: var(--orange);
+  background: linear-gradient(90deg, var(--bg3), var(--bg2));
+  border-top: 1px solid var(--bg3);
   overflow: hidden;
   height: 32px;
   display: flex;
   align-items: center;
+  position: relative;
+}
+#ticker-wrap::before {
+  content: '▶';
+  flex-shrink: 0;
+  color: var(--cyan);
+  font-size: 10px;
+  padding: 0 8px;
+  opacity: 0.8;
 }
 #ticker-track {
+  flex: 1;
   display: flex;
   white-space: nowrap;
+  overflow: hidden;
   animation: ticker 22s linear infinite;
 }
 .ticker-text {
-  font-size: 15px; font-weight: 700;
-  color: #fff; padding-right: 80px;
+  font-size: 14px; font-weight: 700;
+  color: var(--normal); padding-right: 80px;
 }
 @keyframes ticker {
   from { transform: translateX(320px); }
   to   { transform: translateX(-100%); }
 }
 
-/* ══ 右侧弹幕（微信气泡） ══ */
-
+/* ════════════════════════
+   右侧：弹幕
+   ════════════════════════ */
 #chat-list {
   flex: 1;
   overflow: hidden;
@@ -165,6 +245,7 @@ html, body {
   padding: 6px 0 4px;
 }
 
+/* 普通弹幕：微信气泡 */
 .msg {
   display: flex;
   align-items: flex-start;
@@ -174,33 +255,32 @@ html, body {
   flex-shrink: 0;
 }
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .msg-avatar {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: 8px;
   flex-shrink: 0;
   object-fit: cover;
-  background: #DDD;
-  border: 2px solid var(--panel-border);
+  background: var(--bg3);
+  border: 1px solid var(--bg3);
 }
 
 .bubble {
-  background: var(--bubble-bg);
-  border: 2px solid var(--bubble-border);
-  border-radius: 0 12px 12px 12px;
-  padding: 6px 12px;
-  max-width: 240px;
+  background: var(--bg2);
+  border: 1px solid var(--bg3);
+  border-radius: 0 10px 10px 10px;
+  padding: 5px 10px;
+  max-width: 244px;
   word-break: break-all;
-  position: relative;
-  box-shadow: 2px 2px 0 var(--bubble-border);
 }
 .bubble-author {
-  font-size: 13px;
-  font-weight: 900;
+  font-size: 12px;
+  font-weight: 700;
   margin-bottom: 2px;
+  letter-spacing: 0.3px;
 }
 .author-0 { color: var(--normal); }
 .author-1 { color: var(--member); }
@@ -208,7 +288,7 @@ html, body {
 .author-3 { color: var(--owner); }
 
 .bubble-content {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--text);
   line-height: 1.4;
@@ -221,33 +301,43 @@ html, body {
   flex-shrink: 0;
   animation: fadeUp 0.18s ease-out;
 }
-.msg-inline .inline-text {
-  font-size: 15px;
-  font-weight: 700;
-  padding: 4px 12px;
+.inline-text {
+  font-size: 14px; font-weight: 700;
+  padding: 3px 12px;
   border-radius: 20px;
-  border: 2px solid;
 }
-.msg-gift   .inline-text { color: #B07800; background: #FFF8D6; border-color: #FFD070; }
-.msg-member .inline-text { color: #007A40; background: #D6F5E8; border-color: #70DBA8; }
+.msg-gift   .inline-text {
+  color: var(--gold);
+  background: rgba(255,184,0,0.1);
+  border: 1px solid rgba(255,184,0,0.3);
+}
+.msg-member .inline-text {
+  color: var(--member);
+  background: rgba(0,212,170,0.1);
+  border: 1px solid rgba(0,212,170,0.3);
+}
 
 /* 醒目留言 */
 .msg-sc-wrap {
-  margin: 5px 10px;
+  margin: 6px 10px;
   padding: 8px 12px;
-  border-left: 4px solid var(--orange);
-  background: #FFF0E8;
-  border-radius: 0 10px 10px 0;
-  border: 2px solid #FFD0B0;
-  border-left: 4px solid var(--orange);
+  background: linear-gradient(135deg, rgba(255,85,119,0.12), rgba(255,184,0,0.06));
+  border: 1px solid rgba(255,85,119,0.35);
+  border-radius: 8px;
   flex-shrink: 0;
   animation: fadeUp 0.18s ease-out;
-  box-shadow: 2px 2px 0 #FFD0B0;
 }
-.sc-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-.sc-author { font-size: 16px; font-weight: 900; color: var(--orange); }
-.sc-price  { font-size: 14px; font-weight: 900; color: var(--gold); }
-.sc-body   { font-size: 19px; font-weight: 700; color: var(--text); word-break: break-all; }
+.sc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255,85,119,0.2);
+}
+.sc-author { font-size: 15px; font-weight: 900; color: var(--rose); }
+.sc-price  { font-size: 13px; font-weight: 900; color: var(--gold); }
+.sc-body   { font-size: 18px; font-weight: 700; color: var(--text); word-break: break-all; }
 </style>
 </head>
 <body>
@@ -255,25 +345,48 @@ html, body {
 
   <!-- 左侧信息面板 -->
   <div class="panel" id="left-panel">
+
     <div id="cam-area">
-      <div class="cam-frame"></div>
-      <span id="cam-label">PLAYER CAM</span>
+      <div id="cam-corner-br"></div>
+      <div id="cam-corner-bl"></div>
+      <div id="cam-label">● LIVE</div>
     </div>
-    <div class="sf6-stripe"></div>
-    <div id="announcement-body"></div>
-    <div id="schedule-body"></div>
+
+    <div class="divider">
+      <span class="divider-line"></span>
+      <span class="divider-dot accent"></span>
+      <span class="divider-line"></span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">公告</div>
+      <div id="announcement-body"></div>
+    </div>
+
+    <div class="divider">
+      <span class="divider-line"></span>
+      <span class="divider-dot"></span>
+      <span class="divider-line"></span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">今日目标</div>
+      <div id="schedule-body"></div>
+    </div>
+
     <div id="ticker-wrap">
       <div id="ticker-track">
         <span class="ticker-text" id="ticker-text"></span>
         <span class="ticker-text" id="ticker-text2"></span>
       </div>
     </div>
+
   </div>
 
-  <!-- 中间透明区域 -->
+  <!-- 中间透明 -->
   <div id="center"></div>
 
-  <!-- 右侧弹幕面板 -->
+  <!-- 右侧弹幕 -->
   <div class="panel" id="right-panel">
     <div id="chat-list"></div>
   </div>
@@ -286,7 +399,7 @@ const MAX = 60
 const list = document.getElementById('chat-list')
 const TYPE_TEXT = 0, TYPE_GIFT = 1, TYPE_MEMBER = 2, TYPE_SC = 3
 
-const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" rx="8" fill="%23DDD"/></svg>'
+const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"><rect width="38" height="38" rx="8" fill="%232E2655"/></svg>'
 
 function esc(s) {
   return String(s ?? '')
@@ -308,31 +421,27 @@ class Handler extends blcsdk.MsgHandler {
       case TYPE_SC:     this._sc(msg);     break
     }
   }
-
   _text(msg) {
     const div = document.createElement('div')
-    div.className = 'msg msg-text'
+    div.className = 'msg'
     div.dataset.id = msg.id
-    const avatar = msg.avatarUrl || DEFAULT_AVATAR
-    const ac = msg.authorType ?? 0
+    const av = msg.avatarUrl || DEFAULT_AVATAR
     div.innerHTML = `
-      <img class="msg-avatar" src="${esc(avatar)}" onerror="this.src='${DEFAULT_AVATAR}'">
+      <img class="msg-avatar" src="${esc(av)}" onerror="this.src='${DEFAULT_AVATAR}'">
       <div class="bubble">
-        <div class="bubble-author author-${ac}">${esc(msg.authorName)}</div>
+        <div class="bubble-author author-${msg.authorType ?? 0}">${esc(msg.authorName)}</div>
         <div class="bubble-content">${esc(msg.content)}</div>
       </div>`
     push(div)
   }
-
   _gift(msg) {
     const div = document.createElement('div')
     div.className = 'msg-inline msg-gift'
     div.dataset.id = msg.id
     const price = msg.price > 0 ? ` ¥${msg.price}` : ''
-    div.innerHTML = `<span class="inline-text">🎁 ${esc(msg.authorName)} 送出 ${esc(msg.giftName)} ×${msg.num}${price}</span>`
+    div.innerHTML = `<span class="inline-text">🎁 ${esc(msg.authorName)} · ${esc(msg.giftName)} ×${msg.num}${price}</span>`
     push(div)
   }
-
   _member(msg) {
     const div = document.createElement('div')
     div.className = 'msg-inline msg-member'
@@ -340,7 +449,6 @@ class Handler extends blcsdk.MsgHandler {
     div.innerHTML = `<span class="inline-text">⚔ ${esc(msg.authorName)} 开通了舰长</span>`
     push(div)
   }
-
   _sc(msg) {
     const div = document.createElement('div')
     div.className = 'msg-sc-wrap'
@@ -353,11 +461,9 @@ class Handler extends blcsdk.MsgHandler {
       <div class="sc-body">${esc(msg.content)}</div>`
     push(div)
   }
-
   delMsgs(ids) {
     for (const id of ids) { const el = byId(id); if (el) el.remove() }
   }
-
   updateMsg(id, vals) {
     const el = byId(id)
     if (!el || !vals.translation) return
@@ -365,7 +471,7 @@ class Handler extends blcsdk.MsgHandler {
     if (!t) {
       t = document.createElement('div')
       t.className = 'bubble-content translation'
-      t.style.cssText = 'color:#999;font-size:15px'
+      t.style.cssText = 'color:#7870A0;font-size:14px'
       el.querySelector('.bubble')?.appendChild(t)
     }
     t.textContent = vals.translation
@@ -375,7 +481,6 @@ class Handler extends blcsdk.MsgHandler {
 blcsdk.setMsgHandler(new Handler())
 blcsdk.init().catch(console.error)
 
-/* ── 信息面板 ── */
 async function loadContent() {
   try {
     const r = await fetch('./content.json?_=' + Date.now())
@@ -383,9 +488,9 @@ async function loadContent() {
     const data = await r.json()
     document.getElementById('announcement-body').textContent = data.announcement || ''
     document.getElementById('schedule-body').textContent = data.schedule || ''
-    const ticker = data.ticker || ''
-    document.getElementById('ticker-text').textContent = ticker
-    document.getElementById('ticker-text2').textContent = ticker
+    const t = data.ticker || ''
+    document.getElementById('ticker-text').textContent = t
+    document.getElementById('ticker-text2').textContent = t
   } catch(e) { console.error('content.json 加载失败', e) }
 }
 
