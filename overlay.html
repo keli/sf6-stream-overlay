@@ -7,18 +7,19 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #1B1730;
-  --bg2:      #241E3F;
-  --bg3:      #2E2655;
-  --cyan:     #00D4AA;
-  --gold:     #FFB800;
-  --rose:     #FF5577;
-  --member:   #00D4AA;
-  --admin:    #FFB800;
-  --owner:    #FF5577;
-  --normal:   #C8C0E0;
-  --text:     #F0ECFF;
-  --dim:      #7870A0;
+  --bg:      #FFFBF0;
+  --bg2:     #FFF5E0;
+  --orange:  #FF5500;
+  --teal:    #00A896;
+  --gold:    #FFB300;
+  --rose:    #E8003D;
+  --member:  #00875A;
+  --admin:   #CC8000;
+  --owner:   #E8003D;
+  --normal:  #444;
+  --text:    #1A1A1A;
+  --border:  #DDCCBB;
+  --dim:     #999;
 }
 
 html, body {
@@ -43,7 +44,7 @@ html, body {
 }
 
 /* ════════════════════════
-   侧边栏通用
+   侧边栏
    ════════════════════════ */
 .panel {
   flex: 0 0 320px;
@@ -52,147 +53,113 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: relative;
+  border: 3px solid var(--border);
 }
 
-/* 顶部彩虹渐变边 */
-.panel::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--cyan), var(--gold), var(--rose));
-  z-index: 10;
-}
-
-/* 左侧竖条装饰 */
-#left-panel::after {
-  content: '';
-  position: absolute;
-  top: 0; right: 0;
-  width: 2px; height: 100%;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    var(--cyan) 20%,
-    var(--gold) 50%,
-    var(--rose) 80%,
-    transparent 100%
-  );
-  opacity: 0.4;
-}
-#right-panel::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 2px; height: 100%;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    var(--rose) 20%,
-    var(--gold) 50%,
-    var(--cyan) 80%,
-    transparent 100%
-  );
-  opacity: 0.4;
-}
-
-/* 分隔线 */
-.divider {
+/* 顶部色条 */
+.panel-top-bar {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  height: 20px;
-  gap: 8px;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--orange) 0px,  var(--orange) 40px,
+    var(--gold)   40px, var(--gold)   80px,
+    var(--teal)   80px, var(--teal)  120px,
+    var(--rose)  120px, var(--rose)  160px
+  );
 }
-.divider-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--dim), transparent);
-}
-.divider-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--dim);
-  flex-shrink: 0;
-}
-.divider-dot.accent { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
 
 /* section 区块 */
 .section {
   flex-shrink: 0;
-  padding: 12px 16px;
-  position: relative;
+  border-bottom: 2px solid var(--border);
 }
 
-/* section 小标题 */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 6px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.section-header .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-orange { background: var(--orange); }
+.dot-teal   { background: var(--teal); }
+.dot-gold   { background: var(--gold); }
+
 .section-label {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--dim);
-  margin-bottom: 6px;
+}
+
+.section-body {
+  padding: 14px 16px;
 }
 
 /* ════════════════════════
-   左侧：摄像头区
+   摄像头
    ════════════════════════ */
 #cam-area {
   flex-shrink: 0;
   width: 320px;
-  height: 220px;
-  background: #0D0B1A;
+  height: 218px;
+  background: #E8E0D0;
   position: relative;
+  border-bottom: 2px solid var(--border);
 }
-
-/* 四角装饰 */
 #cam-area::before,
-#cam-area::after,
-#cam-corner-br,
-#cam-corner-tl-inner {
+#cam-area::after {
   content: '';
   position: absolute;
-  width: 18px; height: 18px;
-  border-color: var(--cyan);
+  width: 20px; height: 20px;
   border-style: solid;
+  border-color: var(--orange);
 }
-#cam-area::before { top: 8px; left: 8px;    border-width: 2px 0 0 2px; }
-#cam-area::after  { top: 8px; right: 8px;   border-width: 2px 2px 0 0; }
-#cam-corner-br    { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; border-color: var(--gold); }
-#cam-corner-bl    {
+#cam-area::before { top: 10px; left: 10px;  border-width: 3px 0 0 3px; }
+#cam-area::after  { top: 10px; right: 10px; border-width: 3px 3px 0 0; }
+#cam-corner-bl, #cam-corner-br {
   position: absolute;
-  bottom: 8px; left: 8px;
-  width: 18px; height: 18px;
-  border: 2px solid var(--gold);
-  border-width: 0 0 2px 2px;
+  width: 20px; height: 20px;
+  border-style: solid;
+  border-color: var(--teal);
 }
+#cam-corner-bl { bottom: 28px; left: 10px;  border-width: 0 0 3px 3px; }
+#cam-corner-br { bottom: 28px; right: 10px; border-width: 0 3px 3px 0; }
 
 #cam-label {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  background: linear-gradient(90deg, rgba(0,212,170,0.15), transparent);
-  border-top: 1px solid rgba(0,212,170,0.3);
-  padding: 4px 10px;
-  font-size: 10px; font-weight: 700;
-  color: var(--cyan); letter-spacing: 3px;
+  background: var(--orange);
+  padding: 4px 12px;
+  font-size: 11px; font-weight: 900;
+  color: #fff; letter-spacing: 3px;
   text-transform: uppercase;
+  text-align: center;
 }
 
 /* ════════════════════════
-   左侧：文字区块
+   文字内容
    ════════════════════════ */
 #announcement-body {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 900;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--text);
 }
 
 #schedule-body {
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1.6;
-  color: var(--cyan);
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.5;
+  color: var(--teal);
 }
 
 /* ════════════════════════
@@ -201,32 +168,29 @@ html, body {
 #ticker-wrap {
   margin-top: auto;
   flex-shrink: 0;
-  background: linear-gradient(90deg, var(--bg3), var(--bg2));
-  border-top: 1px solid var(--bg3);
+  background: var(--teal);
   overflow: hidden;
-  height: 32px;
+  height: 36px;
   display: flex;
   align-items: center;
-  position: relative;
+  border-top: 2px solid var(--border);
 }
 #ticker-wrap::before {
   content: '▶';
   flex-shrink: 0;
-  color: var(--cyan);
-  font-size: 10px;
-  padding: 0 8px;
-  opacity: 0.8;
+  color: #fff;
+  font-size: 11px;
+  padding: 0 10px;
 }
 #ticker-track {
   flex: 1;
   display: flex;
   white-space: nowrap;
-  overflow: hidden;
   animation: ticker 22s linear infinite;
 }
 .ticker-text {
-  font-size: 14px; font-weight: 700;
-  color: var(--normal); padding-right: 80px;
+  font-size: 16px; font-weight: 900;
+  color: #fff; padding-right: 80px;
 }
 @keyframes ticker {
   from { transform: translateX(320px); }
@@ -234,7 +198,7 @@ html, body {
 }
 
 /* ════════════════════════
-   右侧：弹幕
+   弹幕气泡
    ════════════════════════ */
 #chat-list {
   flex: 1;
@@ -245,11 +209,10 @@ html, body {
   padding: 6px 0 4px;
 }
 
-/* 普通弹幕：微信气泡 */
 .msg {
   display: flex;
   align-items: flex-start;
-  padding: 4px 10px;
+  padding: 5px 10px;
   gap: 8px;
   animation: fadeUp 0.18s ease-out;
   flex-shrink: 0;
@@ -260,27 +223,28 @@ html, body {
 }
 
 .msg-avatar {
-  width: 38px; height: 38px;
+  width: 42px; height: 42px;
   border-radius: 8px;
   flex-shrink: 0;
   object-fit: cover;
-  background: var(--bg3);
-  border: 1px solid var(--bg3);
+  background: var(--bg2);
+  border: 2px solid var(--border);
 }
 
 .bubble {
-  background: var(--bg2);
-  border: 1px solid var(--bg3);
-  border-radius: 0 10px 10px 10px;
-  padding: 5px 10px;
-  max-width: 244px;
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 0 12px 12px 12px;
+  padding: 6px 12px;
+  max-width: 242px;
   word-break: break-all;
+  box-shadow: 2px 2px 0 var(--border);
 }
+
 .bubble-author {
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 2px;
-  letter-spacing: 0.3px;
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 3px;
 }
 .author-0 { color: var(--normal); }
 .author-1 { color: var(--member); }
@@ -288,7 +252,7 @@ html, body {
 .author-3 { color: var(--owner); }
 
 .bubble-content {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text);
   line-height: 1.4;
@@ -302,42 +266,37 @@ html, body {
   animation: fadeUp 0.18s ease-out;
 }
 .inline-text {
-  font-size: 14px; font-weight: 700;
-  padding: 3px 12px;
+  font-size: 16px; font-weight: 900;
+  padding: 4px 14px;
   border-radius: 20px;
+  border: 2px solid;
 }
-.msg-gift   .inline-text {
-  color: var(--gold);
-  background: rgba(255,184,0,0.1);
-  border: 1px solid rgba(255,184,0,0.3);
-}
-.msg-member .inline-text {
-  color: var(--member);
-  background: rgba(0,212,170,0.1);
-  border: 1px solid rgba(0,212,170,0.3);
-}
+.msg-gift   .inline-text { color: #7A5500; background: #FFF8DC; border-color: var(--gold); }
+.msg-member .inline-text { color: var(--member); background: #E6FAF5; border-color: #80D4BD; }
 
 /* 醒目留言 */
 .msg-sc-wrap {
   margin: 6px 10px;
-  padding: 8px 12px;
-  background: linear-gradient(135deg, rgba(255,85,119,0.12), rgba(255,184,0,0.06));
-  border: 1px solid rgba(255,85,119,0.35);
-  border-radius: 8px;
+  padding: 10px 12px;
+  background: #FFF5F7;
+  border: 2px solid #FFB3C1;
+  border-left: 5px solid var(--rose);
+  border-radius: 0 10px 10px 0;
   flex-shrink: 0;
   animation: fadeUp 0.18s ease-out;
+  box-shadow: 2px 2px 0 #FFB3C1;
 }
 .sc-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(255,85,119,0.2);
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #FFB3C1;
 }
-.sc-author { font-size: 15px; font-weight: 900; color: var(--rose); }
-.sc-price  { font-size: 13px; font-weight: 900; color: var(--gold); }
-.sc-body   { font-size: 18px; font-weight: 700; color: var(--text); word-break: break-all; }
+.sc-author { font-size: 17px; font-weight: 900; color: var(--rose); }
+.sc-price  { font-size: 15px; font-weight: 900; color: var(--gold); }
+.sc-body   { font-size: 22px; font-weight: 700; color: var(--text); word-break: break-all; }
 </style>
 </head>
 <body>
@@ -345,33 +304,32 @@ html, body {
 
   <!-- 左侧信息面板 -->
   <div class="panel" id="left-panel">
+    <div class="panel-top-bar"></div>
 
     <div id="cam-area">
-      <div id="cam-corner-br"></div>
       <div id="cam-corner-bl"></div>
-      <div id="cam-label">● LIVE</div>
-    </div>
-
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-dot accent"></span>
-      <span class="divider-line"></span>
+      <div id="cam-corner-br"></div>
+      <div id="cam-label">● PLAYER CAM</div>
     </div>
 
     <div class="section">
-      <div class="section-label">公告</div>
-      <div id="announcement-body"></div>
-    </div>
-
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-dot"></span>
-      <span class="divider-line"></span>
+      <div class="section-header">
+        <span class="dot dot-orange"></span>
+        <span class="section-label">公告</span>
+      </div>
+      <div class="section-body">
+        <div id="announcement-body"></div>
+      </div>
     </div>
 
     <div class="section">
-      <div class="section-label">今日目标</div>
-      <div id="schedule-body"></div>
+      <div class="section-header">
+        <span class="dot dot-teal"></span>
+        <span class="section-label">今日目标</span>
+      </div>
+      <div class="section-body">
+        <div id="schedule-body"></div>
+      </div>
     </div>
 
     <div id="ticker-wrap">
@@ -380,7 +338,6 @@ html, body {
         <span class="ticker-text" id="ticker-text2"></span>
       </div>
     </div>
-
   </div>
 
   <!-- 中间透明 -->
@@ -388,6 +345,7 @@ html, body {
 
   <!-- 右侧弹幕 -->
   <div class="panel" id="right-panel">
+    <div class="panel-top-bar"></div>
     <div id="chat-list"></div>
   </div>
 
@@ -399,7 +357,7 @@ const MAX = 60
 const list = document.getElementById('chat-list')
 const TYPE_TEXT = 0, TYPE_GIFT = 1, TYPE_MEMBER = 2, TYPE_SC = 3
 
-const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"><rect width="38" height="38" rx="8" fill="%232E2655"/></svg>'
+const DEFAULT_AVATAR = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42"><rect width="42" height="42" rx="8" fill="%23DDD"/></svg>'
 
 function esc(s) {
   return String(s ?? '')
@@ -471,7 +429,7 @@ class Handler extends blcsdk.MsgHandler {
     if (!t) {
       t = document.createElement('div')
       t.className = 'bubble-content translation'
-      t.style.cssText = 'color:#7870A0;font-size:14px'
+      t.style.cssText = 'color:#999;font-size:16px'
       el.querySelector('.bubble')?.appendChild(t)
     }
     t.textContent = vals.translation
